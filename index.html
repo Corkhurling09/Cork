@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cork Hurling Management - Enhanced</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .welcome-banner {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: white;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 30px rgba(220, 38, 38, 0.4);
+        }
+
+        .welcome-title {
+            font-size: 3.2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .welcome-subtitle {
+            font-size: 1.4rem;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+
+        .main-app {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 0;
+            border-bottom: 4px solid #e5e7eb;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 2rem;
+            color: #dc2626;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .tabs {
+            display: flex;
+            background: white;
+            border-radius: 20px;
+            padding: 12px;
+            margin-bottom: 50px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border: 4px solid #e5e7eb;
+            gap: 8px;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+        }
+
+        .tab {
+            padding: 20px 30px;
+            background: transparent;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            white-space: nowrap;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+            min-width: 140px;
+            color: #6b7280;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: white;
+            box-shadow: 0 8px 25px rgba(220, 38, 38, 0.4);
+            transform: translateY(-4px);
+        }
+
+        .tab:hover:not(.active) {
+            background: #f3f4f6;
+            color: #dc2626;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .tab-content {
+            display: none;
+            animation: slideIn 0.3s ease-out;
+            min-height: 400px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.08);
+            border: 3px solid #e5e7eb;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin-bottom: 40px;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+
+        .card h3 {
+            color: #dc2626;
+            margin-bottom: 30px;
+            font-size: 2.2rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+            border-bottom: 4px solid #f3f4f6;
+            padding-bottom: 20px;
+        }
+
+        .card h4 {
+            color: #374151;
+            margin-bottom: 25px;
+            font-size: 1.6rem;
+            font-weight: 600;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #ffffff, #f8fafc);
+            padding: 35px 40px;
+            border-radius: 20px;
+            margin-bottom: 50px;
+            border-left: 8px solid #dc2626;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            border: 3px solid #e5e7eb;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #111827;
+            margin-bottom: 15px;
+            letter-spacing: -0.5px;
+            word-spacing: 0.2em;
+            line-height: 1.2;
+        }
+
+        .section-subtitle {
+            color: #6b7280;
+            font-size: 1.3rem;
+            line-height: 1.5;
+            margin-top: 10px;
+        }
+
+        .grid {
+            display: grid;
+            gap: 30px;
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #374151;
+            font-size: 1.1rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 16px;
+            border: 3px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            transition: border-color 0.3s ease;
+            background: white;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #dc2626;
+            box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.1);
+        }
+
+        .btn {
+            background: #dc2626;
+            color: white;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+            margin-right: 12px;
+            margin-bottom: 12px;
+        }
+
+        .btn:hover, .btn:active {
+            background: #b91c1c;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220, 38, 38, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .btn-small {
+            padding: 12px 24px;
+            font-size: 1rem;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-warning {
+            background: #f59e0b;
+        }
+
+        .btn-warning:hover {
+            background: #d97706;
+        }
+
+        .btn-success {
+            background: #10b981;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        /* Enhanced responsive design */
+        @media (max-width: 768px) {
+            .welcome-title {
+                font-size: 2.4rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+                word-spacing: normal;
+            }
+            
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+            }
+            
+            .tabs {
+                overflow-x: scroll;
+                padding: 8px;
+                flex-wrap: nowrap;
+            }
+
+            .tab {
+                min-width: 120px;
+                padding: 16px 20px;
+                font-size: 1rem;
+                flex-shrink: 0;
+            }
+
+            .card {
+                padding: 25px;
+            }
+
+            .section-header {
+                padding: 25px 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="welcome-banner">
+            <h1 class="welcome-title">Cork Hurling Management</h1>
+            <p class="welcome-subtitle">Enhanced Match Analysis & Team Management System</p>
+        </div>
+
+        <div class="main-app">
+            <div class="header">
+                <div class="logo">Hurling Management System</div>
+            </div>
+
+            <div class="tabs" id="tabContainer">
+                <button class="tab active" data-tab="dashboard">Dashboard</button>
+                <button class="tab" data-tab="teams">Team Management</button>
+                <button class="tab" data-tab="match">Game Day</button>
+                <button class="tab" data-tab="stats">Match History</button>
+                <button class="tab" data-tab="settings">Settings</button>
+            </div>
+
+            <!-- Dashboard Tab -->
+            <div id="dashboard" class="tab-content active">
+                <div class="section-header">
+                    <div class="section-title">Dashboard Overview</div>
+                    <div class="section-subtitle">Quick overview of team performance and upcoming matches</div>
+                </div>
+                
+                <div class="grid grid-3">
+                    <div class="card">
+                        <h3>Team Performance</h3>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 20px;">
+                            <div style="background: linear-gradient(135deg, #f8f9fa, #e5e7eb); padding: 25px; border-radius: 15px; text-align: center;">
+                                <div style="font-size: 2rem; font-weight: bold; color: #dc2626;" id="totalPlayers">0</div>
+                                <div style="color: #6b7280; font-size: 1rem; margin-top: 8px;">Active Players</div>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #f8f9fa, #e5e7eb); padding: 25px; border-radius: 15px; text-align: center;">
+                                <div style="font-size: 2rem; font-weight: bold; color: #dc2626;" id="totalGoals">0</div>
+                                <div style="color: #6b7280; font-size: 1rem; margin-top: 8px;">Season Goals</div>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #f8f9fa, #e5e7eb); padding: 25px; border-radius: 15px; text-align: center;">
+                                <div style="font-size: 2rem; font-weight: bold; color: #dc2626;" id="totalPoints">0</div>
+                                <div style="color: #6b7280; font-size: 1rem; margin-top: 8px;">Season Points</div>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #f8f9fa, #e5e7eb); padding: 25px; border-radius: 15px; text-align: center;">
+                                <div style="font-size: 2rem; font-weight: bold; color: #dc2626;" id="winRate">0%</div>
+                                <div style="color: #6b7280; font-size: 1rem; margin-top: 8px;">Win Rate</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Recent Matches</h3>
+                        <div id="recentMatches">
+                            <p style="color: #6b7280; text-align: center; padding: 20px;">No matches recorded yet</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Next Match</h3>
+                        <div class="form-group">
+                            <label>Match Date & Time:</label>
+                            <input type="datetime-local" class="form-control" id="nextMatch">
+                        </div>
+                        <div class="form-group">
+                            <label>Opponent Team:</label>
+                            <input type="text" class="form-control" id="opponent" placeholder="Enter opponent name">
+                        </div>
+                        <div class="form-group">
+                            <label>Venue:</label>
+                            <input type="text" class="form-control" id="venue" placeholder="Match venue">
+                        </div>
+                        <button class="btn" onclick="saveMatchDetails()">Save Match Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Teams Tab -->
+            <div id="teams" class="tab-content">
+                <div class="section-header">
+                    <div class="section-title">Team Management</div>
+                    <div class="section-subtitle">Manage your squads and player assignments</div>
+                </div>
+                
+                <div class="card">
+                    <h3>Squad Management</h3>
+                    
+                    <div style="display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap;">
+                        <button class="btn active" id="team1Btn" onclick="switchTeam('team1')">Team A</button>
+                        <button class="btn btn-secondary" id="team2Btn" onclick="switchTeam('team2')">Team B</button>
+                    </div>
+
+                    <div class="grid grid-2">
+                        <div>
+                            <h4>Add New Player</h4>
+                            <div class="form-group">
+                                <label>Player Name:</label>
+                                <input type="text" class="form-control" id="newPlayerName" placeholder="Enter player name">
+                            </div>
+                            <div class="form-group">
+                                <label>Jersey Number:</label>
+                                <input type="number" class="form-control" id="jerseyNumber" placeholder="1-30" min="1" max="30">
+                            </div>
+                            <div class="form-group">
+                                <label>Position:</label>
+                                <select class="form-control" id="playerPosition">
+                                    <option value="">Select Position</option>
+                                    <option value="Goalkeeper">Goalkeeper</option>
+                                    <option value="Full Back">Full Back</option>
+                                    <option value="Wing Back">Wing Back</option>
+                                    <option value="Centre Half Back">Centre Half Back</option>
+                                    <option value="Midfielder">Midfielder</option>
+                                    <option value="Centre Half Forward">Centre Half Forward</option>
+                                    <option value="Wing Forward">Wing Forward</option>
+                                    <option value="Full Forward">Full Forward</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Age:</label>
+                                <input type="number" class="form-control" id="playerAge" placeholder="Player age" min="16" max="45">
+                            </div>
+                            <button class="btn" onclick="addPlayer()">Add Player to Squad</button>
+                        </div>
+                        
+                        <div>
+                            <h4 id="currentTeamTitle">Team A Squad</h4>
+                            <div id="currentSquad" style="max-height: 500px; overflow-y: auto;">
+                                <!-- Players will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>All Players Pool</h3>
+                    <div id="allPlayersPool">
+                        <!-- All players will be shown here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Day Tab -->
+            <div id="match" class="tab-content">
+                <div class="section-header">
+                    <div class="section-title">Game Day</div>
+                    <div class="section-subtitle">Live match scoring, timing, and player tracking</div>
+                </div>
+                
+                <!-- Match Clock -->
+                <div style="background: linear-gradient(135deg, #1f2937, #374151); color: white; padding: 30px; border-radius: 20px; text-align: center; margin-bottom: 30px; box-shadow: 0 8px 30px rgba(0,0,0,0.3);">
+                    <div style="font-size: 4rem; font-weight: bold; margin-bottom: 20px; font-family: 'Courier New', monospace;" id="matchClock">70:00</div>
+                    <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                        <button class="btn btn-small" onclick="setMatchTime(60)">60 Min</button>
+                        <button class="btn btn-small" onclick="setMatchTime(70)">70 Min</button>
+                        <button class="btn btn-success btn-small" onclick="startClock()">Start</button>
+                        <button class="btn btn-warning btn-small" onclick="pauseClock()">Pause</button>
+                        <button class="btn btn-secondary btn-small" onclick="resetClock()">Reset</button>
+                        <button class="btn btn-small" onclick="addInjuryTime()">+Injury Time</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-2">
+                    <div class="card">
+                        <h3>Live Scoreboard</h3>
+                        <div class="grid grid-2">
+                            <div style="background: #fef3c7; padding: 25px; border-radius: 15px; border: 3px solid #f59e0b;">
+                                <h4>Your Team: <span id="homeScore">0-0</span></h4>
+                                <div style="margin-top: 20px;">
+                                    <button class="btn btn-small" onclick="addScore('home', 'goal')">Add Goal (+3)</button>
+                                    <button class="btn btn-secondary btn-small" onclick="addScore('home', 'point')">Add Point (+1)</button>
+                                </div>
+                            </div>
+                            <div style="background: #dbeafe; padding: 25px; border-radius: 15px; border: 3px solid #3b82f6;">
+                                <h4>Opposition: <span id="awayScore">0-0</span></h4>
+                                <div style="margin-top: 20px;">
+                                    <button class="btn btn-small" onclick="addScore('away', 'goal')">Add Goal (+3)</button>
+                                    <button class="btn btn-secondary btn-small" onclick="addScore('away', 'point')">Add Point (+1)</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 25px; text-align: center;">
+                            <button class="btn btn-danger" onclick="clearScoreboard()">Clear Scoreboard</button>
+                        </div>
+                        
+                        <div style="background: #f0fdf4; border: 3px solid #dcfce7; border-radius: 15px; padding: 25px; margin-top: 25px;">
+                            <h4>Match Notes</h4>
+                            <textarea class="form-control" id="matchNotes" placeholder="Record key moments, player performances, tactical observations..." rows="4"></textarea>
+                            <button class="btn btn-small" style="margin-top: 15px;" onclick="saveMatchNote()">Save Note</button>
+                            <div id="savedNotes" style="margin-top: 20px;"></div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Player Statistics</h3>
+                        <div class="form-group">
+                            <label>Select Team:</label>
+                            <select class="form-control" id="statsTeamSelect" onchange="updatePlayerOptions()">
+                                <option value="team1">Team A</option>
+                                <option value="team2">Team B</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Select Player:</label>
+                            <select class="form-control" id="livePlayerSelect" onchange="selectLivePlayer()">
+                                <option value="">Choose a player...</option>
+                            </select>
+                        </div>
+
+                        <div id="liveStatsDisplay" style="display: none;">
+                            <div style="background: #f0fdf4; border: 3px solid #dcfce7; border-radius: 15px; padding: 25px; margin: 25px 0;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap;">
+                                    <h4 style="margin: 0; color: #166534;">Tracking: <span id="selectedPlayerName">Player Name</span></h4>
+                                    <button class="btn btn-secondary btn-small" onclick="resetPlayerStats()">Reset Stats</button>
+                                </div>
+                                
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                                    <div style="background: white; padding: 20px; border-radius: 12px; border: 3px solid #e5e7eb;">
+                                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                                            <span style="font-weight: bold; color: #dc2626;">Goals</span>
+                                            <div style="display: flex; align-items: center; gap: 10px;">
+                                                <button style="width: 32px; height: 32px; border: 2px solid #ef4444; background: white; color: #ef4444; border-radius: 50%; cursor: pointer; font-size: 1.2rem; font-weight: bold;" onclick="adjustStat('goals', -1)">−</button>
+                                                <span style="font-size: 1.5rem; font-weight: bold; color: #dc2626;" id="playerGoals">0</span>
+                                                <button style="width: 32px; height: 32px; border: 2px solid #10b981; background: white; color: #10b981; border-radius: 50%; cursor: pointer; font-size: 1.2rem; font-weight: bold;" onclick="adjustStat('goals', 1)">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div style="background: white; padding: 20px; border-radius: 12px; border: 3px solid #e5e7eb;">
+                                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                                            <span style="font-weight: bold; color: #dc2626;">Points</span>
+                                            <div style="display: flex; align-items: center; gap: 10px;">
+                                                <button style="width: 32px; height: 32px; border: 2px solid #ef4444; background: white; color: #ef4444; border-radius: 50%; cursor: pointer; font-size: 1.2rem; font-weight: bold;" onclick="adjustStat('points', -1)">−</button>
+                                                <span style="font-size: 1.5rem; font-weight: bold; color: #dc2626;" id="playerPoints">0</span>
+                                                <button style="width: 32px; height: 32px; border: 2px solid #10b981; background: white; color: #10b981; border-radius: 50%; cursor: pointer; font-size: 1.2rem; font-weight: bold;" onclick="adjustStat('points', 1)">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Match History Tab -->
+            <div id="stats" class="tab-content">
+                <div class="section-header">
+                    <div class="section-title">Match History</div>
+                    <div class="section-subtitle">Review past matches and performance analytics</div>
+                </div>
+                
+                <div class="card">
+                    <h3>Match Records</h3>
+                    <div id="matchHistory">
+                        <p style="color: #6b7280; text-align: center; padding: 40px;">No match history available yet</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settings" class="tab-content">
+                <div class="section-header">
+                    <div class="section-title">Settings</div>
+                    <div class="section-subtitle">Configure your management system preferences</div>
+                </div>
+                
+                <div class="card">
+                    <h3>System Configuration</h3>
+                    <div class="form-group">
+                        <label>Team Name:</label>
+                        <input type="text" class="form-control" id="teamName" placeholder="Enter your team name">
+                    </div>
+                    <div class="form-group">
+                        <label>Manager Name:</label>
+                        <input type="text" class="form-control" id="managerName" placeholder="Enter manager name">
+                    </div>
+                    <button class="btn" onclick="saveSettings()">Save Settings</button>
+                </div>
+
+                <div class="card">
+                    <h3>Data Management</h3>
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                        <button class="btn btn-warning" onclick="exportData()">Export Data</button>
+                        <button class="btn btn-danger" onclick="clearAllData()">Clear All Data</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let teams = {
+            team1: [],
+            team2: []
+        };
+        let currentTeam = 'team1';
+        let matchTime = 70 * 60; // 70 minutes in seconds
+        let clockRunning = false;
+        let clockInterval;
+        let homeGoals = 0, homePoints = 0;
+        let awayGoals = 0, awayPoints = 0;
+        let currentPlayerStats = {
+            goals: 0,
+            points: 0,
+            assists: 0,
+            saves: 0
+        };
+        let selectedPlayerId = null;
+        let matchNotes = [];
+        let matchHistory = [];
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeTabs();
+            displayTeam();
+            displayAllPlayers();
+            updateDashboard();
+            updatePlayerOptions();
+        });
+
+        // Tab switching function with event delegation
+        function initializeTabs() {
+            const tabContainer = document.getElementById('tabContainer');
+            tabContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('tab')) {
+                    const tabName = e.target.getAttribute('data-tab');
+                    switchTab(tabName);
+                }
+            });
+        }
+
+        function switchTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected tab content
+            const selectedContent = document.getElementById(tabName);
+            if (selectedContent) {
+                selectedContent.classList.add('active');
+            }
+            
+            // Add active class to clicked tab
+            const selectedTab = document.querySelector(`[data-tab="${tabName}"]`);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+        }
+
+        // Team management functions
+        function switchTeam(teamId) {
+            currentTeam = teamId;
+            const team1Btn = document.getElementById('team1Btn');
+            const team2Btn = document.getElementById('team2Btn');
+            
+            if (teamId === 'team1') {
+                team1Btn.className = 'btn active';
+                team2Btn.className = 'btn btn-secondary';
+                document.getElementById('currentTeamTitle').textContent = 'Team A Squad';
+            } else {
+                team1Btn.className = 'btn btn-secondary';
+                team2Btn.className = 'btn active';
+                document.getElementById('currentTeamTitle').textContent = 'Team B Squad';
+            }
+            
+            displayTeam();
+            updatePlayerOptions();
+        }
+
+        function addPlayer() {
+            const name = document.getElementById('newPlayerName').value.trim();
+            const jersey = document.getElementById('jerseyNumber').value;
+            const position = document.getElementById('playerPosition').value;
+            const age = document.getElementById('playerAge').value;
+
+            if (!name || !jersey || !position || !age) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            // Check if jersey number is already taken
+            const existingPlayer = teams[currentTeam].find(p => p.jersey === parseInt(jersey));
+            if (existingPlayer) {
+                alert('Jersey number already taken in this team');
+                return;
+            }
+
+            const player = {
+                id: Date.now(),
+                name: name,
+                jersey: parseInt(jersey),
+                position: position,
+                age: parseInt(age),
+                goals: 0,
+                points: 0
+            };
+
+            teams[currentTeam].push(player);
+            clearForm();
+            displayTeam();
+            displayAllPlayers();
+            updateDashboard();
+            updatePlayerOptions();
+        }
+
+        function clearForm() {
+            document.getElementById('newPlayerName').value = '';
+            document.getElementById('jerseyNumber').value = '';
+            document.getElementById('playerPosition').value = '';
+            document.getElementById('playerAge').value = '';
+        }
+
+        function displayTeam() {
+            const container = document.getElementById('currentSquad');
+            const players = teams[currentTeam];
+            
+            if (players.length === 0) {
+                container.innerHTML = '<p style="color: #6b7280; text-align: center; padding: 20px;">No players added yet</p>';
+                return;
+            }
+
+            container.innerHTML = players.map(player => `
+                <div style="padding: 20px; background: #f8f9fa; border-radius: 12px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; border: 3px solid #e5e7eb;">
+                    <div>
+                        <strong>${player.name}</strong><br>
+                        <span style="color: #6b7280;">Jersey: ${player.jersey} | ${player.position} | Age: ${player.age}</span>
+                    </div>
+                    <div>
+                        <button class="btn btn-danger btn-small" onclick="removePlayer(${player.id})">Remove</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function removePlayer(playerId) {
+            teams[currentTeam] = teams[currentTeam].filter(player => player.id !== playerId);
+            displayTeam();
+            displayAllPlayers();
+            updateDashboard();
+            updatePlayerOptions();
+        }
+
+        function displayAllPlayers() {
+            const container = document.getElementById('allPlayersPool');
+            const allPlayers = [...teams.team1, ...teams.team2];
+            
+            if (allPlayers.length === 0) {
+                container.innerHTML = '<p style="color: #6b7280; text-align: center; padding: 20px;">No players in the system yet</p>';
+                return;
+            }
+
+            container.innerHTML = allPlayers.map(player => {
+                const teamLabel = teams.team1.includes(player) ? 'Team A' : 'Team B';
+                return `
+                    <div style="padding: 15px; background: #f8f9fa; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 2px solid #e5e7eb;">
+                        <div>
+                            <strong>${player.name}</strong> (${teamLabel})<br>
+                            <span style="color: #6b7280; font-size: 0.9rem;">Jersey: ${player.jersey} | ${player.position} | Age: ${player.age}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateDashboard() {
+            const totalPlayers = teams.team1.length + teams.team2.length;
+            const totalGoals = [...teams.team1, ...teams.team2].reduce((sum, player) => sum + (player.goals || 0), 0);
+            const totalPoints = [...teams.team1, ...teams.team2].reduce((sum, player) => sum + (player.points || 0), 0);
+            
+            document.getElementById('totalPlayers').textContent = totalPlayers;
+            document.getElementById('totalGoals').textContent = totalGoals;
+            document.getElementById('totalPoints').textContent = totalPoints;
+            document.getElementById('winRate').textContent = '0%'; // Calculate based on match history
+        }
+
+        // Match functions
+        function setMatchTime(minutes) {
+            matchTime = minutes * 60;
+            updateClockDisplay();
+        }
+
+        function startClock() {
+            if (!clockRunning) {
+                clockRunning = true;
+                clockInterval = setInterval(() => {
+                    if (matchTime > 0) {
+                        matchTime--;
+                        updateClockDisplay();
+                    } else {
+                        pauseClock();
+                    }
+                }, 1000);
+            }
+        }
+
+        function pauseClock() {
+            clockRunning = false;
+            if (clockInterval) {
+                clearInterval(clockInterval);
+            }
+        }
+
+        function resetClock() {
+            pauseClock();
+            matchTime = 70 * 60;
+            updateClockDisplay();
+        }
+
+        function addInjuryTime() {
+            matchTime += 60; // Add 1 minute
+            updateClockDisplay();
+        }
+
+        function updateClockDisplay() {
+            const minutes = Math.floor(matchTime / 60);
+            const seconds = matchTime % 60;
+            document.getElementById('matchClock').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function addScore(team, type) {
+            if (team === 'home') {
+                if (type === 'goal') {
+                    homeGoals++;
+                } else {
+                    homePoints++;
+                }
+            } else {
+                if (type === 'goal') {
+                    awayGoals++;
+                } else {
+                    awayPoints++;
+                }
+            }
+            updateScoreboard();
+        }
+
+        function updateScoreboard() {
+            document.getElementById('homeScore').textContent = `${homeGoals}-${homePoints}`;
+            document.getElementById('awayScore').textContent = `${awayGoals}-${awayPoints}`;
+        }
+
+        function clearScoreboard() {
+            homeGoals = homePoints = awayGoals = awayPoints = 0;
+            updateScoreboard();
+        }
+
+        function saveMatchNote() {
+            const note = document.getElementById('matchNotes').value.trim();
+            if (note) {
+                const timestamp = new Date().toLocaleTimeString();
+                matchNotes.push({ time: timestamp, note: note });
+                document.getElementById('matchNotes').value = '';
+                displayMatchNotes();
+            }
+        }
+
+        function displayMatchNotes() {
+            const container = document.getElementById('savedNotes');
+            container.innerHTML = matchNotes.map(note => `
+                <div style="background: white; padding: 10px; border-radius: 8px; margin-bottom: 8px; border-left: 4px solid #dc2626;">
+                    <small style="color: #6b7280;">${note.time}</small><br>
+                    ${note.note}
+                </div>
+            `).join('');
+        }
+
+        function updatePlayerOptions() {
+            const select = document.getElementById('livePlayerSelect');
+            const selectedTeam = document.getElementById('statsTeamSelect').value;
+            const players = teams[selectedTeam];
+            
+            select.innerHTML = '<option value="">Choose a player...</option>';
+            players.forEach(player => {
+                select.innerHTML += `<option value="${player.id}">${player.name} (${player.jersey})</option>`;
+            });
+        }
+
+        function selectLivePlayer() {
+            const playerId = document.getElementById('livePlayerSelect').value;
+            if (playerId) {
+                selectedPlayerId = parseInt(playerId);
+                const selectedTeam = document.getElementById('statsTeamSelect').value;
+                const player = teams[selectedTeam].find(p => p.id === selectedPlayerId);
+                if (player) {
+                    document.getElementById('selectedPlayerName').textContent = player.name;
+                    document.getElementById('playerGoals').textContent = player.goals || 0;
+                    document.getElementById('playerPoints').textContent = player.points || 0;
+                    document.getElementById('liveStatsDisplay').style.display = 'block';
+                }
+            } else {
+                document.getElementById('liveStatsDisplay').style.display = 'none';
+            }
+        }
+
+        function adjustStat(statType, change) {
+            if (selectedPlayerId) {
+                const selectedTeam = document.getElementById('statsTeamSelect').value;
+                const player = teams[selectedTeam].find(p => p.id === selectedPlayerId);
+                if (player) {
+                    player[statType] = Math.max(0, (player[statType] || 0) + change);
+                    document.getElementById(`player${statType.charAt(0).toUpperCase() + statType.slice(1)}`).textContent = player[statType];
+                    updateDashboard();
+                }
+            }
+        }
+
+        function resetPlayerStats() {
+            if (selectedPlayerId) {
+                const selectedTeam = document.getElementById('statsTeamSelect').value;
+                const player = teams[selectedTeam].find(p => p.id === selectedPlayerId);
+                if (player) {
+                    player.goals = 0;
+                    player.points = 0;
+                    document.getElementById('playerGoals').textContent = '0';
+                    document.getElementById('playerPoints').textContent = '0';
+                    updateDashboard();
+                }
+            }
+        }
+
+        function saveMatchDetails() {
+            const matchDate = document.getElementById('nextMatch').value;
+            const opponent = document.getElementById('opponent').value;
+            const venue = document.getElementById('venue').value;
+            
+            if (matchDate && opponent && venue) {
+                alert('Match details saved successfully!');
+            } else {
+                alert('Please fill in all match details');
+            }
+        }
+
+        function saveSettings() {
+            const teamName = document.getElementById('teamName').value;
+            const managerName = document.getElementById('managerName').value;
+            
+            if (teamName || managerName) {
+                alert('Settings saved successfully!');
+            }
+        }
+
+        function exportData() {
+            const data = {
+                teams: teams,
+                matchHistory: matchHistory,
+                settings: {
+                    teamName: document.getElementById('teamName').value,
+                    managerName: document.getElementById('managerName').value
+                }
+            };
+            
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'hurling_management_data.json';
+            link.click();
+        }
+
+        function clearAllData() {
+            if (confirm('Are you sure you want to clear all data? This cannot be undone.')) {
+                teams = { team1: [], team2: [] };
+                matchHistory = [];
+                matchNotes = [];
+                currentTeam = 'team1';
+                selectedPlayerId = null;
+                
+                // Reset displays
+                displayTeam();
+                displayAllPlayers();
+                updateDashboard();
+                updatePlayerOptions();
+                
+                // Clear forms
+                document.getElementById('teamName').value = '';
+                document.getElementById('managerName').value = '';
+                document.getElementById('nextMatch').value = '';
+                document.getElementById('opponent').value = '';
+                document.getElementById('venue').value = '';
+                
+                alert('All data has been cleared.');
+            }
+        }
+    </script>
+</body>
+</html>
